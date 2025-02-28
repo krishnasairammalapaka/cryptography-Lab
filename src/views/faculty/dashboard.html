@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - Cryptography Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 shadow-lg w-full">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <span class="text-2xl font-bold gradient-text">Faculty Dashboard</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-300">Welcome, <%= user.name %></span>
+                    <a href="/auth/logout" class="text-blue-500 hover:text-blue-400 font-medium">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Student Management Card -->
+            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-blue-400 mb-4">Student Management</h3>
+                <p class="text-gray-300 mb-4">View and manage student progress and submissions.</p>
+                <a href="/faculty/students" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    Manage Students
+                </a>
+            </div>
+
+            <!-- Exercise Management Card -->
+            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-blue-400 mb-4">Exercise Management</h3>
+                <p class="text-gray-300 mb-4">Create and modify cryptography exercises.</p>
+                <a href="/faculty/exercises" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    Manage Exercises
+                </a>
+            </div>
+
+            <!-- Analytics Card -->
+            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-blue-400 mb-4">Analytics</h3>
+                <p class="text-gray-300 mb-4">View student performance analytics and reports.</p>
+                <a href="/faculty/analytics" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    View Analytics
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html> 

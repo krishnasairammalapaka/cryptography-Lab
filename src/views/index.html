@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 shadow-lg fixed w-full z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <h1 class="text-2xl font-bold gradient-text">Cryptography Lab</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" 
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20">
+        <div class="max-w-6xl mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <!-- Text Content -->
+                <div class="text-left" data-aos="fade-right">
+                    <h2 class="text-5xl font-bold mb-6 gradient-text">Welcome to Cryptography Lab</h2>
+                    <p class="text-xl text-gray-400">
+                        Explore the fascinating world of cryptography through our comprehensive platform for learning and experimenting with various cryptographic algorithms and techniques.
+                    </p>
+                </div>
+                
+                <!-- Cryptography Illustration -->
+                <div class="relative" data-aos="fade-left">
+                    <div class="absolute inset-0 bg-blue-500 opacity-10 rounded-lg filter blur-xl"></div>
+                    <div class="relative p-4">
+                        <img src="/images/crypto-illustration.jpg"  
+                             alt="Cryptography Concept" 
+                             class="w-full h-auto rounded-lg shadow-2xl"
+                             style="background-color: #9333EA;"
+                        >
+                        <!-- Floating Elements -->
+                        <div class="absolute -top-4 -right-4 w-20 h-20 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
+                        <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-500 rounded-full opacity-20 animate-pulse delay-150"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Features Card -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-2xl hover-scale" data-aos="fade-right">
+                    <div class="flex items-center mb-6">
+                        <svg class="w-8 h-8 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-blue-400">Features</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Encryption and Decryption Tools
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Hash Function Analysis
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Digital Signatures
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Key Generation
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Technologies Card -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-2xl hover-scale" data-aos="fade-left">
+                    <div class="flex items-center mb-6">
+                        <svg class="w-8 h-8 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-blue-400">Technologies</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Node.js Backend
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Express Framework
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Tailwind CSS
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Modern Cryptography Libraries
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+</body>
+</html>
