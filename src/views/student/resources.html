@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Resources - Cryptography Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 300px;
+            z-index: 1;
+        }
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 shadow-lg w-full">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <span class="text-2xl font-bold gradient-text">Learning Resources</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/student/dashboard" class="text-gray-300 hover:text-white">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="bg-gray-800 rounded-lg p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-blue-400 mb-6">Cryptography Topics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-6">
+                    <div class="bg-gray-700 rounded-lg p-6 hover:bg-gray-600 transition-colors">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Basic Ciphers</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/shift-cipher" class="hover:text-blue-400">Breaking the Shift Cipher</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/mono-alphabetic" class="hover:text-blue-400">Breaking the Mono-alphabetic Substitution Cipher</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/one-time-pad" class="hover:text-blue-400">One-Time Pad and Perfect Secrecy</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-700 rounded-lg p-6 hover:bg-gray-600 transition-colors">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Modern Cryptography</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/mac" class="hover:text-blue-400">Message Authentication Codes</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/hash-functions" class="hover:text-blue-400">Cryptographic Hash Functions and Applications</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-gray-700 rounded-lg p-6 hover:bg-gray-600 transition-colors">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Encryption Standards</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/des" class="hover:text-blue-400">Symmetric Key Encryption Standards (DES)</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/aes" class="hover:text-blue-400">Symmetric Key Encryption Standards (AES)</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-700 rounded-lg p-6 hover:bg-gray-600 transition-colors">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Public Key Cryptography</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/diffie-hellman" class="hover:text-blue-400">Diffie-Hellman Key Establishment</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/pkcs" class="hover:text-blue-400">Public-Key Cryptosystems (PKCSv1.5)</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <a href="/resources/digital-signatures" class="hover:text-blue-400">Digital Signatures</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add any interactive functionality here if needed
+    </script>
+</body>
+</html> 

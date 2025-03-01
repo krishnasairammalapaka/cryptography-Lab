@@ -6,16 +6,16 @@ class AuthService {
         try {
             console.log('Attempting login for:', email);
 
-            // Query the users table
-            const { data: user, error } = await supabase
+            // First check if user exists in the users table
+            const { data: user, error: userError } = await supabase
                 .from('users')
-                .select('*')  // Select all fields
+                .select('*')
                 .eq('email', email)
                 .single();
 
-            if (error) {
-                console.error('Database error:', error);
-                throw error;
+            if (userError) {
+                console.error('User fetch error:', userError);
+                return { error: 'Invalid email or password' };
             }
 
             if (!user) {
@@ -23,21 +23,21 @@ class AuthService {
                 return { error: 'Invalid email or password' };
             }
 
-            console.log('Found user:', { ...user, password: '[HIDDEN]' });
-
-            // For testing - remove in production
-            console.log('Stored password:', user.password);
-            console.log('Provided password:', password);
-
-            // Since we're storing plain passwords for testing, adjust comparison
-            // In production, use bcrypt.compare
-            const validPassword = user.password === password;
-            // const validPassword = await bcrypt.compare(password, user.password);
+            // For existing users, verify password directly
+            // Note: This is temporary until all users are migrated to Supabase Auth
+            const validPassword = user.password === password; // or use bcrypt.compare if passwords are hashed
 
             if (!validPassword) {
                 console.log('Invalid password');
                 return { error: 'Invalid email or password' };
             }
+
+            // Create a session object similar to Supabase Auth
+            const session = {
+                user_id: user.id,
+                created_at: new Date().toISOString(),
+                expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours from now
+            };
 
             // Update last login
             const { error: updateError } = await supabase
@@ -52,10 +52,12 @@ class AuthService {
                 console.error('Error updating last login:', updateError);
             }
 
-            // Remove password from user object
-            const { password: _, ...userData } = user;
+            const userData = {
+                ...user,
+                session
+            };
 
-            console.log('Login successful:', userData);
+            console.log('Login successful:', { ...userData, password: '[HIDDEN]', session: '[HIDDEN]' });
             return { user: userData };
 
         } catch (error) {
@@ -66,26 +68,26 @@ class AuthService {
 
     async createUser(userData) {
         try {
-            // Hash password
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(userData.password, salt);
-
-            // Create user in users table
-            const { data: user, error } = await supabase
+            // For now, create user directly in users table
+            // Later we can migrate to using Supabase Auth
+            const { data: profile, error: profileError } = await supabase
                 .from('users')
                 .insert([{
                     email: userData.email,
                     username: userData.username,
-                    password: hashedPassword,
+                    password: userData.password, // Note: In production, hash this password
                     role: userData.role,
                     first_name: userData.first_name,
-                    last_name: userData.last_name
+                    last_name: userData.last_name,
+                    created_at: new Date(),
+                    updated_at: new Date()
                 }])
-                .select('id, email, username, role, first_name, last_name')
+                .select()
                 .single();
 
-            if (error) throw error;
-            return { success: true, user };
+            if (profileError) throw profileError;
+
+            return { success: true, user: profile };
         } catch (error) {
             console.error('Create user error:', error);
             return { error: 'Failed to create user' };

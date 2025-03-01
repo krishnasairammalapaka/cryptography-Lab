@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - Cryptography Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .gradient-text {
             background: linear-gradient(45deg, #3b82f6, #60a5fa);
@@ -12,57 +13,248 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 300px;
+            z-index: 1;
+        }
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
-    <!-- Navbar -->
-    <nav class="bg-gray-800 shadow-lg w-full">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
-                    <span class="text-2xl font-bold gradient-text">Student Dashboard</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-300">Welcome, <%= user.name %></span>
-                    <a href="/auth/logout" class="text-blue-500 hover:text-blue-400 font-medium">Logout</a>
+    <!-- Sidebar -->
+    <div class="fixed left-0 top-0 h-full w-64 bg-gray-800 p-4">
+        <div class="mb-8 flex items-center space-x-3">
+            <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <div>
+                <h1 class="text-lg font-bold text-white">Cryptography Lab</h1>
+                <p class="text-xs text-gray-400">Security & Privacy</p>
+            </div>
+        </div>
+        <nav>
+            <ul class="space-y-4">
+                <li>
+                    <a href="#" class="flex items-center space-x-3 text-purple-500 bg-purple-500/10 px-4 py-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center space-x-3 text-gray-400 hover:text-purple-500 px-4 py-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0114 0z"/>
+                        </svg>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center space-x-3 text-gray-400 hover:text-purple-500 px-4 py-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <span>Courses</span>
+                    </a>
+                </li>
+                <!-- Add other sidebar items -->
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Top Navigation -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="relative">
+                <input type="text" placeholder="Search" class="bg-gray-800 text-gray-100 px-4 py-2 rounded-lg pl-10">
+                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="dropdown">
+                    <button class="flex items-center space-x-3 focus:outline-none" id="userDropdown">
+                        <div class="relative">
+                            <img src="/avatar.jpg" alt="Profile" class="w-10 h-10 rounded-full">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full"></span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm">Jara Khan</span>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="dropdown-content bg-gray-800 rounded-lg shadow-xl mt-2 py-2">
+                        <div class="px-4 py-3 border-b border-gray-700">
+                            <p class="text-sm font-medium text-white">Jara Khan</p>
+                            <p class="text-xs text-gray-400">jara.khan@example.com</p>
+                        </div>
+                        <div class="py-2">
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-700">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                Profile
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-700">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                Settings
+                            </a>
+                        </div>
+                        <div class="border-t border-gray-700 py-2">
+                            <a href="/auth/logout" class="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-700">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Cryptography Exercises Card -->
-            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h3 class="text-xl font-bold text-blue-400 mb-4">Cryptography Exercises</h3>
-                <p class="text-gray-300 mb-4">Practice various cryptographic algorithms and techniques.</p>
-                <a href="/student/exercises" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    Start Exercises
-                </a>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-4 gap-6 mb-8">
+            <div class="bg-purple-500/10 p-6 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm text-gray-400">Total Students</h3>
+                        <p class="text-2xl font-bold">1220</p>
+                    </div>
+                    <div class="bg-purple-500 p-3 rounded-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- Add other stat cards similarly -->
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-3 gap-6">
+            <!-- Statistics Chart -->
+            <div class="col-span-2 bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Statistics</h2>
+                    <select class="bg-gray-700 text-gray-300 px-3 py-1 rounded">
+                        <option>Yearly</option>
+                    </select>
+                </div>
+                <canvas id="statisticsChart" height="200"></canvas>
             </div>
 
-            <!-- Progress Tracking Card -->
-            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h3 class="text-xl font-bold text-blue-400 mb-4">My Progress</h3>
-                <p class="text-gray-300 mb-4">Track your learning progress and completed exercises.</p>
-                <a href="/student/progress" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    View Progress
-                </a>
-            </div>
-
-            <!-- Learning Resources Card -->
-            <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h3 class="text-xl font-bold text-blue-400 mb-4">Learning Resources</h3>
-                <p class="text-gray-300 mb-4">Access study materials and documentation.</p>
-                <a href="/student/resources" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    Browse Resources
-                </a>
+            <!-- Calendar -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">January 2022</h2>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400">&lt;</button>
+                        <button class="text-gray-400">&gt;</button>
+                    </div>
+                </div>
+                <!-- Calendar grid here -->
             </div>
         </div>
-    </main>
+
+        <!-- Database Table -->
+        <div class="mt-8 bg-gray-800 rounded-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Database</h2>
+                <div class="flex space-x-4">
+                    <button class="text-purple-500">Student</button>
+                    <button class="text-gray-400">Teacher</button>
+                    <button class="text-gray-400">Staff</button>
+                </div>
+            </div>
+            <table class="w-full">
+                <thead>
+                    <tr class="text-gray-400">
+                        <th class="text-left py-3">Student name</th>
+                        <th class="text-left py-3">Score</th>
+                        <th class="text-left py-3">Submitted</th>
+                        <th class="text-left py-3">Grade</th>
+                        <th class="text-left py-3">Pass/Fail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add table rows here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initialize statistics chart
+        const ctx = document.getElementById('statisticsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2017', '2018', '2019', '2020', '2021', '2021'],
+                datasets: [{
+                    data: [200, 400, 300, 500, 400, 300],
+                    backgroundColor: '#a855f7',
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Dropdown functionality
+        document.getElementById('userDropdown')?.addEventListener('click', function() {
+            this.parentElement.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownButton = document.getElementById('userDropdown');
+            
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html> 
