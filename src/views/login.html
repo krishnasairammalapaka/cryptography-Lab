@@ -4,114 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Cryptography Lab</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjYTg1NWY3IiBkPSJNMTIgMTV2Mm0tNiA0aDEyYTIgMiAwIDAwMi0ydi02YTIgMiAwIDAwLTItMkg2YTIgMiAwIDAwLTIgMnY2YTIgMiAwIDAwMiAyem0xMC0xMFY3YTQgNCAwIDAwLTggMHY0aDh6Ii8+PC9zdmc+" />
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDI0IDI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNhODU1ZjciIGQ9Ik0xMiAxNXYybS02IDRoMTJhMiAyIDAgMDAyLTJ2LTZhMiAyIDAgMDAtMi0ySDZhMiAyIDAgMDAtMiAydjZhMiAyIDAgMDAyIDJ6bTEwLTEwVjdhNCA0IDAgMDAtOCAwdjRoOHoiLz48L3N2Zz4=" />
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjYTg1NWY3IiBkPSJNMTIgMTV2Mm0tNiA0aDEyYTIgMiAwIDAwMi0ydi02YTIgMiAwIDAwLTItMkg2YTIgMiAwIDAwLTIgMnY2YTIgMiAwIDAwMiAyem0xMC0xMFY3YTQgNCAwIDAwLTggMHY0aDh6Ii8+PC9zdmc+" />
+    <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjYTg1NWY3IiBkPSJNMTIgMTV2Mm0tNiA0aDEyYTIgMiAwIDAwMi0ydi02YTIgMiAwIDAwLTItMkg2YTIgMiAwIDAwLTIgMnY2YTIgMiAwIDAwMiAyem0xMC0xMFY3YTQgNCAwIDAwLTggMHY0aDh6Ii8+PC9zdmc+" />
+    <meta name="theme-color" content="#a855f7">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         .gradient-text {
-            background: linear-gradient(45deg, #3b82f6, #60a5fa);
-            background-clip: text;
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .hover-scale {
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .hover-scale:hover {
             transform: scale(1.02);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+        .crypto-bg {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(139, 92, 246, 0.1));
+        }
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
+        }
+        .illustration-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #2d1d43, #1f1937);
+        }
+        .illustration-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(139, 92, 246, 0.2));
+            pointer-events: none;
+        }
+        .crypto-illustration {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.7s ease;
+        }
+        .crypto-illustration.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .crypto-illustration:not(.loaded) {
+            transform: scale(1.1);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100">
+<body class="bg-gray-900 text-gray-100 min-h-screen">
     <!-- Navbar -->
-    <nav class="bg-gray-800 shadow-lg fixed w-full z-50">
+    <nav class="bg-gray-800/50 backdrop-blur-lg shadow-lg fixed w-full z-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="/" class="flex items-center space-x-3 group">
+                    <svg class="w-8 h-8 text-purple-500 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
-                    <a href="/" class="text-2xl font-bold gradient-text">Cryptography Lab</a>
-                </div>
+                    <span class="text-2xl font-bold gradient-text">Cryptography Lab</span>
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="min-h-screen flex items-center justify-center pt-20">
-        <div class="max-w-6xl mx-auto px-4 py-16">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <!-- Login Form -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-2xl hover-scale" data-aos="fade-right">
-                    <h2 class="text-3xl font-bold text-center mb-8 gradient-text">Welcome Back</h2>
-                    <!-- Error Alert -->
-                    <div id="error-alert" class="hidden bg-red-500 bg-opacity-10 border border-red-500 text-red-500 px-4 py-3 rounded relative mb-6" role="alert">
-                        <span class="block sm:inline" id="error-message"></span>
-                    </div>
-                    <form id="login-form" class="space-y-6">
-                        <div>
-                            <label class="block text-gray-300 text-sm font-bold mb-2" for="email">
-                                Email
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                              d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
-                                    </svg>
-                                </div>
-                                <input class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-gray-200"
-                                       type="email" id="email" name="email" placeholder="Enter your email" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 text-sm font-bold mb-2" for="password">
-                                Password
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                    </svg>
-                                </div>
-                                <input class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-gray-200"
-                                       type="password" id="password" name="password" placeholder="Enter your password" required>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="remember" class="h-4 w-4 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-                                <label for="remember" class="ml-2 block text-sm text-gray-300">Remember me</label>
-                            </div>
-                            <a href="#" class="text-sm text-blue-400 hover:text-blue-300">Forgot password?</a>
-                        </div>
-                        <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                            Sign In
-                        </button>
-                    </form>
+    <div class="min-h-screen flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 crypto-bg">
+        <div class="max-w-6xl w-full mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <!-- Login Form -->
+            <div class="bg-gray-800/50 backdrop-blur-md p-8 rounded-2xl shadow-2xl hover-scale" data-aos="fade-right">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text">Welcome Back</h2>
+                    <p class="mt-2 text-gray-400">Sign in to continue your cryptography journey</p>
                 </div>
 
-                <!-- Illustration Section -->
-                <div class="relative hidden md:block" data-aos="fade-left">
-                    <div class="absolute inset-0 bg-blue-500 opacity-10 rounded-lg filter blur-xl"></div>
-                    <div class="relative p-4">
+                <!-- Error Alert -->
+                <div id="error-alert" class="hidden bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                    <span class="block sm:inline" id="error-message"></span>
+                </div>
+
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-semibold mb-2" for="email">
+                            Email Address
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                            <input class="w-full pl-10 pr-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 text-gray-200 input-focus"
+                                   type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm font-semibold mb-2" for="password">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input class="w-full pl-10 pr-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 text-gray-200 input-focus"
+                                   type="password" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" class="h-4 w-4 bg-gray-700 border-gray-600 rounded focus:ring-purple-500 text-purple-500">
+                            <label for="remember" class="ml-2 block text-sm text-gray-300">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-purple-400 hover:text-purple-300 transition-colors">Forgot password?</a>
+                    </div>
+                    <button type="submit"
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center space-x-2">
+                        <span>Sign In</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Updated Illustration Section -->
+            <div class="hidden md:block illustration-container" data-aos="fade-left">
+                <div class="illustration-overlay"></div>
+                <div class="relative p-8">
+                    <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden bg-gray-800">
+                        <!-- Loading placeholder -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-gray-800" id="image-placeholder">
+                            <svg class="animate-spin h-8 w-8 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
                         <img src="/images/crypto-illustration.jpg" 
                              alt="Cryptography Security" 
-                             class="w-full h-auto rounded-lg shadow-2xl"
-                             style="background-color: #9333EA;">
-                        <!-- Decorative Elements -->
-                        <div class="absolute -top-4 -right-4 w-20 h-20 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
-                        <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-500 rounded-full opacity-20 animate-pulse delay-150"></div>
+                             class="crypto-illustration"
+                             id="crypto-image"
+                             onload="this.classList.add('loaded'); document.getElementById('image-placeholder').style.display='none';"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzFmMTkzNyIvPjx0ZXh0IHg9IjQwMCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM4YjVjZjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNyeXB0b2dyYXBoeSBMYWI8L3RleHQ+PC9zdmc+'; this.classList.add('loaded'); document.getElementById('image-placeholder').style.display='none';">
                     </div>
-                    <!-- Additional Info -->
-                    <div class="absolute bottom-8 left-8 right-8 bg-gray-800 bg-opacity-90 p-6 rounded-lg backdrop-blur-sm">
-                        <h3 class="text-xl font-bold text-blue-400 mb-2">Secure Access</h3>
-                        <p class="text-gray-300">
-                            Access your cryptographic tools and experiments with industry-standard security protocols.
-                        </p>
-                    </div>
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-purple-500 rounded-full opacity-20 animate-pulse"></div>
+                    <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-blue-500 rounded-full opacity-20 animate-pulse delay-150"></div>
+                </div>
+                <!-- Info Card -->
+                <div class="absolute bottom-8 left-8 right-8 bg-gray-800/90 p-6 rounded-lg backdrop-blur-sm">
+                    <h3 class="text-xl font-bold text-purple-400 mb-2">Secure Access</h3>
+                    <p class="text-gray-300">
+                        Access your cryptographic tools and experiments with industry-standard security protocols.
+                        Learn and practice in a safe environment.
+                    </p>
                 </div>
             </div>
         </div>
@@ -120,7 +184,7 @@
     <script>
         AOS.init({
             duration: 1000,
-            easing: 'ease-in-out',
+            easing: 'ease-out-cubic',
             once: true,
             mirror: false
         });
@@ -129,6 +193,11 @@
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            submitButton.disabled = true;
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const errorAlert = document.getElementById('error-alert');
@@ -158,8 +227,19 @@
             } catch (error) {
                 errorMessage.textContent = error.message;
                 errorAlert.classList.remove('hidden');
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+
+                // Auto-hide error after 5 seconds
+                setTimeout(() => {
+                    errorAlert.classList.add('hidden');
+                }, 5000);
             }
         });
+
+        // Preload the image
+        const img = new Image();
+        img.src = '/images/crypto-illustration.jpg';
     </script>
 </body>
 </html>
