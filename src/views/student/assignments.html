@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Cryptography Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Sidebar will be inserted here -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Assignments</h1>
+            <div class="flex space-x-4">
+                <select class="bg-gray-800 text-gray-400 px-4 py-2 rounded-lg">
+                    <option>All Courses</option>
+                    <option>Introduction to Cryptography</option>
+                    <option>Advanced Encryption Methods</option>
+                    <option>Practical Cryptography</option>
+                </select>
+                <select class="bg-gray-800 text-gray-400 px-4 py-2 rounded-lg">
+                    <option>All Status</option>
+                    <option>Pending</option>
+                    <option>Submitted</option>
+                    <option>Graded</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Assignments List -->
+        <div class="space-y-4">
+            <!-- Assignment 1 -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Caesar Cipher Implementation</h3>
+                        <p class="text-gray-400 mb-4">Implement a basic Caesar cipher encryption and decryption program using Python.</p>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <span class="text-purple-500">Introduction to Cryptography</span>
+                            <span class="text-gray-400">Due: March 15, 2024</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="px-3 py-1 bg-yellow-500/10 text-yellow-500 rounded-full text-sm">Pending</span>
+                        <button class="bg-purple-500 text-white px-4 py-2 rounded-lg">Start Assignment</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment 2 -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">RSA Key Generation</h3>
+                        <p class="text-gray-400 mb-4">Create a program to generate RSA key pairs and implement basic encryption/decryption.</p>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <span class="text-purple-500">Advanced Encryption Methods</span>
+                            <span class="text-gray-400">Due: March 20, 2024</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-sm">Submitted</span>
+                        <button class="bg-gray-700 text-gray-400 px-4 py-2 rounded-lg">View Submission</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment 3 -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Secure Communication Protocol</h3>
+                        <p class="text-gray-400 mb-4">Design and implement a secure communication protocol using symmetric and asymmetric encryption.</p>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <span class="text-purple-500">Practical Cryptography</span>
+                            <span class="text-gray-400">Due: March 25, 2024</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-sm">Graded: 95%</span>
+                        <button class="bg-gray-700 text-gray-400 px-4 py-2 rounded-lg">View Feedback</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the sidebar content
+        import { insertSidebar } from '/js/sidebar.js';
+        
+        // Insert the sidebar when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            insertSidebar();
+        });
+    </script>
+</body>
+</html> 

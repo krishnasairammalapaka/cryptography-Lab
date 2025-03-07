@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const session = require('express-session');
 const authService = require('./services/authService');
+const studentRoutes = require('./routes/studentRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -12,113 +13,83 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
 
 // Session configuration
 app.use(session({
-    secret: process.env.JWT_SECRET,
+    secret: process.env.JWT_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
-// Set view engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
-app.engine('html', require('ejs').renderFile);
-
 // Routes
 app.get('/', (req, res) => {
-    res.render('index', {
-        user: req.session.user || null
-    });
+    if (req.session.user) {
+        switch (req.session.user.role) {
+            case 'student':
+                return res.redirect('/student/dashboard');
+            default:
+                return res.redirect('/');
+        }
+    }
+    res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
 app.get('/login', (req, res) => {
-    res.render('login', {
-        error: null,
-        user: req.session.user || null
-    });
+    if (req.session.user) {
+        switch (req.session.user.role) {
+            case 'student':
+                return res.redirect('/student/dashboard');
+            default:
+                return res.redirect('/');
+        }
+    }
+    res.sendFile(path.join(__dirname, 'views/login.html'));
 });
 
 // Authentication routes
 app.post('/auth/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log('Login attempt:', { email, password: '[HIDDEN]' });
-
         const { user, error } = await authService.login(email, password);
         
         if (error) {
-            console.log('Login error:', error);
-            return res.render('login', {
-                error: error,
-                user: null
-            });
+            return res.status(401).json({ error });
         }
 
         // Set user session
         req.session.user = user;
-        console.log('Session set:', req.session.user);
 
-        // Redirect based on role
+        // Send response with redirect URL
+        let redirectUrl = '/';
         switch (user.role) {
-            case 'admin':
-                res.redirect('/admin/dashboard');
-                break;
-            case 'faculty':
-                res.redirect('/faculty/dashboard');
-                break;
             case 'student':
-                res.redirect('/student/dashboard');
+                redirectUrl = '/student/dashboard';
                 break;
-            default:
-                res.redirect('/');
         }
+
+        res.json({ 
+            success: true, 
+            redirect: redirectUrl,
+            user: {
+                email: user.email,
+                role: user.role
+            }
+        });
     } catch (err) {
         console.error('Route error:', err);
-        res.render('login', {
-            error: 'An unexpected error occurred',
-            user: null
-        });
+        res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
 
-// Protected route middleware
-const requireAuth = (role) => {
-    return (req, res, next) => {
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
-        if (role && req.session.user.role !== role) {
-            return res.status(403).render('error', {
-                error: 'Unauthorized access',
-                user: req.session.user
-            });
-        }
-        next();
-    };
-};
-
-// Protected routes
-app.get('/admin/dashboard', requireAuth('admin'), (req, res) => {
-    res.render('admin/dashboard', {
-        user: req.session.user
-    });
-});
-
-app.get('/faculty/dashboard', requireAuth('faculty'), (req, res) => {
-    res.render('faculty/dashboard', {
-        user: req.session.user
-    });
-});
-
-app.get('/student/dashboard', requireAuth('student'), (req, res) => {
-    res.render('student/dashboard', {
-        user: req.session.user
-    });
-});
+// Mount student routes
+app.use('/student', studentRoutes);
 
 // Logout route
 app.get('/auth/logout', (req, res) => {
@@ -126,13 +97,10 @@ app.get('/auth/logout', (req, res) => {
     res.redirect('/login');
 });
 
-// Error handling middleware
+// Error handling
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).render('error', {
-        error: 'Something broke!',
-        user: req.session.user || null
-    });
+    res.status(500).sendFile(path.join(__dirname, 'views/error.html'));
 });
 
 // Start server

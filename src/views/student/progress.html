@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress - Cryptography Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Sidebar will be inserted here -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Your Progress</h1>
+            <select class="bg-gray-800 text-gray-400 px-4 py-2 rounded-lg">
+                <option>All Courses</option>
+                <option>Introduction to Cryptography</option>
+                <option>Advanced Encryption Methods</option>
+                <option>Practical Cryptography</option>
+            </select>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Overall Grade -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-sm text-gray-400 mb-2">Overall Grade</h3>
+                <div class="flex items-end space-x-2">
+                    <span class="text-3xl font-bold">92%</span>
+                    <span class="text-green-500 text-sm">+2.5%</span>
+                </div>
+            </div>
+
+            <!-- Completed Assignments -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-sm text-gray-400 mb-2">Completed Assignments</h3>
+                <div class="flex items-end space-x-2">
+                    <span class="text-3xl font-bold">15/20</span>
+                    <span class="text-purple-500 text-sm">75%</span>
+                </div>
+            </div>
+
+            <!-- Course Progress -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-sm text-gray-400 mb-2">Course Progress</h3>
+                <div class="flex items-end space-x-2">
+                    <span class="text-3xl font-bold">65%</span>
+                    <span class="text-blue-500 text-sm">Complete</span>
+                </div>
+            </div>
+
+            <!-- Time Spent -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-sm text-gray-400 mb-2">Time Spent</h3>
+                <div class="flex items-end space-x-2">
+                    <span class="text-3xl font-bold">45h</span>
+                    <span class="text-gray-400 text-sm">This month</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Grade Progress Chart -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4">Grade Progress</h3>
+                <canvas id="gradeChart" height="200"></canvas>
+            </div>
+
+            <!-- Assignment Completion Chart -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4">Assignment Completion</h3>
+                <canvas id="assignmentChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+            <div class="space-y-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div>
+                        <p class="font-medium">Completed "RSA Implementation" assignment</p>
+                        <p class="text-sm text-gray-400">2 days ago</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div>
+                        <p class="font-medium">Started "Digital Signatures" module</p>
+                        <p class="text-sm text-gray-400">3 days ago</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <div>
+                        <p class="font-medium">Achieved 95% in "Symmetric Encryption" quiz</p>
+                        <p class="text-sm text-gray-400">5 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the sidebar content
+        import { insertSidebar } from '/js/sidebar.js';
+        
+        // Insert the sidebar when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            insertSidebar();
+
+            // Initialize Grade Progress Chart
+            const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+            new Chart(gradeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Grade Progress',
+                        data: [85, 88, 87, 90, 92, 92],
+                        borderColor: '#a855f7',
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Initialize Assignment Completion Chart
+            const assignmentCtx = document.getElementById('assignmentChart').getContext('2d');
+            new Chart(assignmentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'In Progress', 'Pending'],
+                    datasets: [{
+                        data: [15, 3, 2],
+                        backgroundColor: ['#a855f7', '#3b82f6', '#6b7280']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#9ca3af'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
